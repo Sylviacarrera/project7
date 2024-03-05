@@ -123,7 +123,6 @@ export const createCard = data => {
   time.setAttribute('class', 'time')
   time.innerHTML = `${data.time} min`
   card.appendChild(time)
-
   return card
 }
 

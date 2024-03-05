@@ -221,6 +221,13 @@ main {
 
                 .items-container {
                     margin-top: 14px;
+                    height: 200px;
+                    overflow: overlay;
+
+                    .yellow-background {
+                        background-color:$yellow;
+                        cursor: pointer;
+                    }
 
                     article {
                         color: $black;
@@ -231,6 +238,7 @@ main {
                         line-height: normal;
                         margin-top: 10px;
                         margin-bottom: 10px;
+                        cursor: pointer;
                     }
                 }
 
@@ -270,7 +278,7 @@ main {
 
         .card {
             margin-top: 55px;
-            width: 380px;
+            width: 480px;
             height: 731px;
             border-radius: 21px;
             background: $white;

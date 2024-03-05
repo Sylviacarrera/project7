@@ -1,7 +1,7 @@
 import { recipes } from '../data/recipes'
 import { filterMainSearchBar, isLowerCaseIncluded } from './search'
 
-const tagsDefault = {
+export const tagsDefault = {
   ingredients: [],
   appliances: [],
   ustensils: []
