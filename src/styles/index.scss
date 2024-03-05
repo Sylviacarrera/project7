@@ -258,6 +258,23 @@ main {
         right: 10%;
     }
 
+    .tags-container {
+        display: flex;
+        justify-content: space-around;
+        margin-top: 30px;
+        
+        span.tag {
+            display: flex;
+            background-color:$yellow;
+            padding: 17px;
+            gap: 20px;
+            border-radius: 10px;
+            font-family: Manrope;
+            font-size: 14px;
+            font-weight: 700;
+        }
+    }
+
     #recipes-container {
         display: flex;
         justify-content: space-between;
