@@ -223,10 +223,14 @@ main {
                     margin-top: 14px;
                     height: 200px;
                     overflow: overlay;
+                    margin-left: -16px;
 
                     .yellow-background {
                         background-color:$yellow;
                         cursor: pointer;
+                        display: flex;
+                        align-items: center;
+                        height: 30px;
                     }
 
                     article {
@@ -239,6 +243,7 @@ main {
                         margin-top: 10px;
                         margin-bottom: 10px;
                         cursor: pointer;
+                        padding-left: 15px;
                     }
                 }
 
@@ -260,7 +265,9 @@ main {
 
     .tags-container {
         display: flex;
-        justify-content: space-around;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 10px;
         margin-top: 30px;
         
         span.tag {
@@ -272,6 +279,14 @@ main {
             font-family: Manrope;
             font-size: 14px;
             font-weight: 700;
+
+                .close-icon {
+                    cursor: pointer;
+                }
+
+            .visible {
+                display: inline;
+              }
         }
     }
 
