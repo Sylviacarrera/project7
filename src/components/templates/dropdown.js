@@ -1,20 +1,21 @@
 import { dropdownDevicesCollapsed, dropdownIngredientsCollapsed, dropdownUstensilsCollapsed } from '../domLinker'
 
 export const createItem = (data, parent) => {
-  parent.innerHTML = ''
+  // Construction d'une chaîne HTML pour tous les éléments
+  const itemsHtml = data.map(item =>
+    `<article>
+       ${item}
+       <i class="fa fa-circle-xmark close-icon"></i>
+     </article>`).join('')
 
-  data.forEach(item => {
-    const article = document.createElement('article')
-    article.textContent = item
-    parent.appendChild(article)
+  // Définir innerHTML du parent pour tous les éléments à la fois
+  parent.innerHTML = itemsHtml
 
-    const closeIconItem = document.createElement('i')
-    closeIconItem.classList.add('fa-solid', 'fa-circle-xmark', 'close-icon') // Ajouter les classes pour l'icône de croix
-    article.appendChild(closeIconItem)
-
+  // Ajouter le gestionnaire d'événements click à chaque article après les avoir créés
+  parent.querySelectorAll('article').forEach(article => {
     article.addEventListener('click', () => {
-      article.classList.toggle('yellow-background')// Ajoute ou retire la classe 'yellow-background' lorsque vous cliquez sur l'article
-      closeIconItem.classList.toggle('visible') // Ajouter ou retirer la classe pour afficher ou masquer l'icône de croix
+      article.classList.toggle('yellow-background')
+      article.querySelector('.close-icon').classList.toggle('visible')
     })
   })
 }
@@ -37,14 +38,15 @@ const createTag = (text, tagContainer) => {
 // Variable pour stocker les articles déjà cliqués
 const clickedArticles = new Set()
 
-// Fonction pour gérer le clic sur les éléments de liste
 const handleListClick = (listElement, tagContainer) => {
   listElement.addEventListener('click', event => {
-    const clickedText = event.target.textContent.trim()
-    if (clickedText && !clickedArticles.has(clickedText)) {
-      clickedArticles.add(clickedText)
-      createTag(clickedText, tagContainer)
-      console.log('Element cliqué:', clickedText)
+    // On s'assure que le clic vient de l'article lui-même, pas d'un enfant.
+    if (event.target.matches('article')) {
+      const clickedText = event.target.textContent.trim()
+      if (!clickedArticles.has(clickedText)) {
+        clickedArticles.add(clickedText)
+        createTag(clickedText, tagContainer)
+      }
     }
   })
 }

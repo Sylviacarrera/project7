@@ -14,3 +14,5 @@ export const devicesSearchBar = document.getElementById('devices-search-bar')
 export const dropdownUstensils = document.querySelector('#dropdown-ustensils img')
 export const dropdownUstensilsCollapsed = document.querySelector('#dropdown-ustensils .collapsed')
 export const ustensilsSearchBar = document.getElementById('ustensils-search-bar')
+
+export const tagsContainer = document.querySelector('.tags-container')

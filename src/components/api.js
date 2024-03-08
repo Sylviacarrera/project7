@@ -1,11 +1,22 @@
 import { recipes } from '../data/recipes'
 import { filterMainSearchBar, isLowerCaseIncluded } from './search'
 
-export const tagsDefault = {
+const tagsDefault = {
   ingredients: [],
   appliances: [],
   ustensils: []
 }
+
+// Fonction pour filtrer les recettes en fonction des tags
+const filterByTags = (recipes, tags) => {
+  return recipes.filter(recipe => {
+    // Vérifie si la recette contient tous les tags sélectionnés
+    return tags.ingredients.every(ingredient => recipe.ingredients.includes(ingredient)) &&
+           tags.appliances.every(appliance => recipe.appliance === appliance) &&
+           tags.ustensils.every(ustensil => recipe.ustensils.includes(ustensil))
+  })
+}
+console.log(filterByTags)
 
 /**
  * Get all recipes filtered by value and tags in param
@@ -15,27 +26,22 @@ export const tagsDefault = {
  */
 export const getRecipes = (value = '', tags = tagsDefault) => {
   const result = value.length >= 3 ? filterMainSearchBar(recipes, value) : recipes
-  // TODO return filterByTags(result, tags)
-  return result
+  const filteredByTags = filterByTags(result, tags)
+  return filteredByTags
 }
 
 /**
- * Get Ingredients filtered
+* Get Ingredients filtered
  * @param {*} main - String searched into main search bar
  * @param {*} value - String to search from input search bar ingredients
  * @param {*} tags - tags filtered
  * @returns Array of String (ingredients)
  */
 export const getIngredients = (main = '', value = '', tags = tagsDefault) => {
-  const recipes = getRecipes(main, tags)
-  let ingredients = []
-  // Get all unique ingredients
-  recipes.forEach(recipe => {
-    ingredients = [...new Set([...ingredients, ...recipe.ingredients.map(item => item.ingredient)])]
-  })
-  return value.length >= 3 ? ingredients.filter(item => isLowerCaseIncluded(item, value)) : ingredients
+  return Array.from(new Set(getRecipes(main, tags)
+    .flatMap(recipe => recipe.ingredients.map(item => item.ingredient.toLowerCase()))
+    .filter(ingredient => value.length < 3 || isLowerCaseIncluded(ingredient, value))))
 }
-
 /**
  * Get Appliances filtered
  * @param {*} main - String searched into main search bar
@@ -44,10 +50,9 @@ export const getIngredients = (main = '', value = '', tags = tagsDefault) => {
  * @returns Array of String (appliances)
  */
 export const getDevices = (main = '', value = '', tags = tagsDefault) => {
-  const recipes = getRecipes(main, tags)
-  // Get all unique appliances
-  const appliances = [...new Set(recipes.map(item => item.appliance))]
-  return value.length >= 3 ? appliances.filter(item => isLowerCaseIncluded(item, value)) : appliances
+  return Array.from(new Set(getRecipes(main, tags)
+    .map(recipe => recipe.appliance.toLowerCase())
+  )).filter(appliance => value.length < 3 || appliance.includes(value.toLowerCase()))
 }
 
 /**
@@ -58,11 +63,10 @@ export const getDevices = (main = '', value = '', tags = tagsDefault) => {
  * @returns Array of String (ustensils)
  */
 export const getUstensils = (main = '', value = '', tags = tagsDefault) => {
-  const recipes = getRecipes(main, tags)
-  let ustensils = []
-  // Get all unique ustensils
-  recipes.forEach(recipe => {
-    ustensils = [...new Set([...ustensils, ...recipe.ustensils])]
-  })
-  return value.length >= 3 ? ustensils.filter(item => isLowerCaseIncluded(item, value)) : ustensils
+  // Une expression régulière qui trouve des parenthèses avec des chiffres à l'intérieur
+  const regex = /\s*\(\d+\)/
+  return Array.from(new Set(getRecipes(main, tags)
+    .flatMap(recipe => recipe.ustensils.map(ustensil =>
+      ustensil.toLowerCase().replace(regex, '').trim()))
+  )).filter(ustensil => value.length < 3 || ustensil.includes(value.toLowerCase()))
 }
